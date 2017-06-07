@@ -7,6 +7,7 @@ jQuery(document).ready( function($) {
     self.profiles = new ProfileCollectionModel();
     self.current_profile = ko.observable();
     self.add_name = ko.observable("");
+    self.rename_name = ko.observable("");
 
     self.current_name = ko.pureComputed(function() {
       return (self.current_profile()) ? self.current_profile().name() : null;
@@ -18,6 +19,7 @@ jQuery(document).ready( function($) {
 
     self.select = function(data) {
       self.current_profile(data);
+      self.rename_name(self.current_profile().name());
     };
 
     self.selectByIndex = function(idx) {
@@ -37,8 +39,21 @@ jQuery(document).ready( function($) {
         else {
           self.current_profile(p);
         }
+        self.rename_name(self.add_name());
         self.add_name("");
       }
+    };
+    
+    self.rename = function() {
+      var n = self.rename_name();
+      if (n)
+        var p = self.profiles.find(n);
+      else
+        return;
+      if (p)
+        self.current_profile(p);
+      self.current_profile().name(n);
+      self.rename_name("");
     };
 
     self.remove = function(profile) {

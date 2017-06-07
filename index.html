@@ -9,9 +9,8 @@
 <script type="text/javascript" src="js/libs/jquery.min.js"></script>
 <script type="text/javascript" src="js/libs/underscore-min.js"></script>
 <script type="text/javascript" src="js/libs/underscore.string.min.js"></script>
-<script type="text/javascript" src="js/libs/knockout-3.4.0.js"></script>
+<script type="text/javascript" src="js/libs/knockout-3.4.2.js"></script>
 <script type="text/javascript" src="js/libs/knockout-secure-binding.min.js"></script>
-<script type="text/javascript" src="js/engine.js"></script>
 <script type="text/javascript" src="js/index.js"></script>
 </head>
 <body>
@@ -35,18 +34,23 @@
 		<a href="#" class="switch" data-sbind="click: switch.flip"><i class="fa" data-sbind="css: switch.toggleStyle" alt="Switch enabled extensions off. Click again to switch back on." title="Switch enabled extensions off. Click again to switch back on."></i></a>
 	</h1>
 </section>
-
+<!-- Search box for extensions -->
 <section id="search" class="main" data-sbind="if: opts.searchBox">
 	<p><i class="fa fa-search"></i> <input type="text" data-sbind="value: search.q, valueUpdate: 'keyup'" tabindex=1 /></p>
 </section>
 
 <section id="content" class="main">
-
+	<!-- Current Profile -->
+	<section data-sbind="if: profiles.any">
+      <h1 >Current Profile</h1>
+      <b><u><span data-sbind="text: currentProfile"></span></u></b>
+	</section>
+  
 	<!-- Profiles -->
 	<section data-sbind="if: profiles.any, visible: !search.q">
 		<h1 >Profiles</h1>
 		<ul data-sbind="foreach: profiles.items">
-			<li class="app" data-sbind="click: $parent.setProfile"><i class="fa fa-users" alt="profile"></i> <span data-sbind="text: short_name"></span></li>
+			<li class="app" data-sbind="click: $parent.setProfile"><i class="fa fa-users" alt="profile"></i> <span data-sbind="text: short_name"></span><span data-sbind="visible: short_name == $parent.currentProfile()"> - ACTIVE</span></li>
 		</ul>
 	</section>
 

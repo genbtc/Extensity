@@ -1,18 +1,30 @@
 {
+    "manifest_version": 2,
 	"name": "Extensity",
-	"version": "1.3.0",
-	"manifest_version": 2,
-	"description": "Quickly enable/disable Google Chrome extensions",
-	"options_page": "options.html",
+	"version": "1.4.400",
+	"description": "Quickly enable/disable Google Chrome extensions (with profiles and automatically by domain)",
 	"icons" : {
 		"16" : "images/icon16.png",
 		"48" : "images/icon48.png",
 		"128" : "images/icon128.png"
 	},
-	"browser_action": {
+    "background": {
+      "persistent": true,
+      "scripts": [
+        "js/libs/jquery.min.js",
+        "js/libs/underscore-min.js",
+        "js/libs/underscore.string.min.js",
+        "js/libs/knockout-3.4.2.js",
+        "js/libs/knockout-secure-binding.min.js",
+        "js/engine.js",
+        "js/background.js"
+      ]
+    },
+    "options_page": "options.html",
+    "browser_action": {
 		"default_icon": "images/iconbar.png",
 		"default_title": "Extensity",
 		"default_popup": "index.html"
 	},
-	"permissions": ["management", "tabs"]
+    "permissions": ["management", "tabs", "activeTab"]
 }

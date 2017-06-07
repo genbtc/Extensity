@@ -7,7 +7,7 @@
 <script type="text/javascript" src="js/libs/jquery.min.js"></script>
 <script type="text/javascript" src="js/libs/underscore-min.js"></script>
 <script type="text/javascript" src="js/libs/underscore.string.min.js"></script>
-<script type="text/javascript" src="js/libs/knockout-3.4.0.js"></script>
+<script type="text/javascript" src="js/libs/knockout-3.4.2.js"></script>
 <script type="text/javascript" src="js/libs/knockout-secure-binding.min.js"></script>
 <script type="text/javascript" src="js/engine.js"></script>
 <script type="text/javascript" src="js/profiles.js"></script>
@@ -44,6 +44,11 @@
       <p>
         <form data-sbind="submit: add">
           <input type="text" id="name" placeholder="New Profile Name" data-sbind="value: add_name" /><button class="add" data-sbind="click: add"><i class="fa fa-plus-circle"></i></button>
+        </form>
+      </p>
+      <p>
+        <form data-sbind="submit: rename">
+          <input type="text" id="name" placeholder="Rename Profile Here" data-sbind="value: rename_name" /><button class="add" data-sbind="click: rename"><i class="fa fa-plus-circle"></i></button>
         </form>
       </p>
       <p>

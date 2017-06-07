@@ -6,7 +6,7 @@
 <link rel="stylesheet" type="text/css" href="styles/font-awesome.min.css" />
 <script type="text/javascript" src="js/libs/jquery.min.js"></script>
 <script type="text/javascript" src="js/libs/underscore-min.js"></script>
-<script type="text/javascript" src="js/libs/knockout-3.4.0.js"></script>
+<script type="text/javascript" src="js/libs/knockout-3.4.2.js"></script>
 <script type="text/javascript" src="js/libs/knockout-secure-binding.min.js"></script>
 <script type="text/javascript" src="js/engine.js"></script>
 <script type="text/javascript" src="js/options.js"></script>
@@ -56,6 +56,12 @@
       <input type="checkbox" name="searchBox" id="searchBox" data-sbind="checked: options.searchBox"/>
       <label for="searchBox">
         Show search box
+      </label>
+    </div>
+    <div class="field">
+      <input type="checkbox" name="profDomains" id="profDomains" data-sbind="checked: options.profDomains"/>
+      <label for="profDomains">
+        Pattern match profile names to current tab's URL and enable/disable the profile based on that
       </label>
     </div>
 		<div class="field">
