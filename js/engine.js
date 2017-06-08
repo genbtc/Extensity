@@ -77,10 +77,11 @@ var OptionsCollection = function() {
 
   self.showHeader     = ko.observable( b('showHeader'     , true) );
   self.groupApps      = ko.observable( b('groupApps'      , true) );
-  self.appsFirst      = ko.observable( b('appsFirst'      , false) );
+  self.appsFirst      = ko.observable( b('appsFirst'      , false));
   self.enabledFirst   = ko.observable( b('enabledFirst'   , true) );
   self.searchBox      = ko.observable( b('searchBox'      , true) );
   self.profDomains    = ko.observable( b('profDomains'    , true) );
+  self.reloadPages    = ko.observable( b('reloadPages'    , false));
 
   self.save = function() {
     localStorage['showHeader'] = self.showHeader();
@@ -89,6 +90,7 @@ var OptionsCollection = function() {
     localStorage['enabledFirst'] = self.enabledFirst();
     localStorage['searchBox'] = self.searchBox();
     localStorage['profDomains'] = self.profDomains();
+    localStorage['reloadPages'] = self.reloadPages();
   };
 
 };
@@ -147,11 +149,11 @@ var ProfileCollectionModel = function() {
       }
     });
     localStorage['profiles'] = JSON.stringify(r);
-    self.update();
   };
   
-  self.update = function(init) {
-    if (!init)
+  //run with (true) to reset
+  self.load = function(reset) {
+    if (reset)
       self.items = ko.observableArray();
     // Load from localStorage on init.
     var p = JSON.parse(localStorage["profiles"] || "{}");
@@ -160,8 +162,8 @@ var ProfileCollectionModel = function() {
       self.items.push(new ProfileModel(name, p[name]));
     });
   }
-  //run once on init(true).
-  self.update(true);
+  
+  self.load();
   return this;
 }
 
@@ -317,13 +319,18 @@ var SwitchViewModel = function(exts) {
 var ExtensityViewModel = function() {
   var self = this;
 
-  self.profiles = new ProfileCollectionModel();
-  self.exts = new ExtensionCollectionModel();
-  self.opts = new OptionsCollection();
-  self.dismissals = new DismissalsCollection();
-  self.switch = new SwitchViewModel(self.exts);
-  self.search = new SearchViewModel();
-
+  self.refreshEngine = function() {
+    self.profiles = new ProfileCollectionModel();
+    self.exts = new ExtensionCollectionModel();
+    self.opts = new OptionsCollection();
+    self.dismissals = new DismissalsCollection();
+    self.switch = new SwitchViewModel(self.exts);
+    self.search = new SearchViewModel();
+    self.currentURL = ko.observable("");
+    self.currentProfile = ko.observable(localStorage["currentProfile"]);    
+  };
+  self.refreshEngine();
+  
   var filterFn = function(i) {
     // Filtering function
     if(!self.opts.searchBox()) return true;
@@ -380,9 +387,6 @@ var ExtensityViewModel = function() {
   var close = function() {
     window.close();
   };
-
-  self.currentURL = ko.observable("");
-  self.currentProfile = ko.observable(localStorage["currentProfile"]);
   
   self.setProfile = function(p) {
     var ids = p.items();
@@ -396,14 +400,13 @@ var ExtensityViewModel = function() {
   };
 
   self.domainLoop = function (URL) {
+    var result = false;
     if (URL) self.currentURL(url);
-    if (!self.currentURL()) return;
-    if (self.currentURL().indexOf(self.currentProfile()) > -1) {
+    if (!self.currentURL()) return result;
+    if (self.currentURL().indexOf(self.currentProfile()) > -1)
       //console.log("Same URL matched to existing profile, do nothing.");
-      return;
-    } else {
-      //console.log("Something was matched: " + self.currentURL());
-    }
+      return result;
+    //continue
     var profs = self.profiles.items();
     for (var i = 0; i < profs.length; i++) {
       if (profs[i].hasItems() && self.currentURL().indexOf(profs[i].name()) > -1) {
@@ -416,10 +419,12 @@ var ExtensityViewModel = function() {
         _(to_disable).each(function(id) { self.exts.find(id).disable(); console.log("Extensity: Auto DISabling: " + self.exts.find(id).name()); });
         self.currentProfile(profs[i].name());
         localStorage["currentProfile"] = self.currentProfile();
+        result=true;
         break;
       }
     }
-    console.log("Extensity: DomainLoop() Finished in 34 milliseconds.");
+    console.log("Extensity: DomainLoop() Finished in 21 milliseconds.");
+    return result;
   }
 };
 //end ExtensityViewModel

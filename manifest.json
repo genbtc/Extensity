@@ -1,7 +1,7 @@
 {
     "manifest_version": 2,
 	"name": "Extensity",
-	"version": "1.4.400",
+	"version": "1.4.401",
 	"description": "Quickly enable/disable Google Chrome extensions (with profiles and automatically by domain)",
 	"icons" : {
 		"16" : "images/icon16.png",

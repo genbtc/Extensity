@@ -64,6 +64,12 @@
         Pattern match profile names to current tab's URL and enable/disable the profile based on that
       </label>
     </div>
+    <div class="field">
+      <input type="checkbox" name="reloadPages" id="reloadPages" data-sbind="checked: options.reloadPages"/>
+      <label for="reloadPages">
+        Auto reloadPages when profile is matched,
+      </label>
+    </div>
 		<div class="field">
 			<button id="save" data-sbind="click: save">Save</button>&nbsp;
 			<a href="#" id="close" data-sbind="click: close">Close</a>
