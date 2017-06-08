@@ -22,7 +22,7 @@ jQuery(document).ready(function ($) {
   //popupWindow = popupList[0];
 
   //event listeners:
-  //chrome.browserAction.onClicked.addListener(updateD); (actual refresh/update needed)
+  //chrome.browserAction.onClicked.addListener(updateD);
   chrome.tabs.onActiveChanged.addListener(function(tabId, props) {
       console.log("Extensity: Active tab changed while focused: " + tabId + " . Switching!");
       switchD();
@@ -41,7 +41,3 @@ function switchD() {
   });
 }
 //code explanation: I think the callback of chrome.tabs.query (which is async) needed to be in the same scope(as in this file) as the receiver (the body of the callback destination vm.domainLoop(url);), which is the original "vm" object and the "ko" binding as well. something about bindings
-
-function refreshD() {
-  vm.refreshEngine();  
-}

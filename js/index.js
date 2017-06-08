@@ -1,11 +1,10 @@
 //(c)2017 genBTC
 //Extensity - index.js (script part of index.html, the browserAction toolbar Popup page)
 backgroundWindow = chrome.extension.getBackgroundPage(); //get backgroundPage handle
-backgroundWindow.refreshD(); //refresh
+backgroundWindow.vm.refreshEngine(); //refresh
 
 //main:
 jQuery(document).ready(function ($) {
-  //console.log("Extensity: index.js: jQuery document ready");
 
   view = backgroundWindow.vm; //reference to the engine's ViewModel we create in background.
   console.log("Extensity: index.js: Referencing the background engine's ViewModel.");

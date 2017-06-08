@@ -387,13 +387,13 @@ var ExtensityViewModel = function() {
   var close = function() {
     window.close();
   };
-  
-  self.setProfile = function(p) {
+
+  self.setProfile = function(p,CommentOutput) {    
     var ids = p.items();
     var to_enable = _.intersection(self.exts.disabled.pluck(),ids);
     var to_disable = _.difference(self.exts.enabled.pluck(), ids);
-    _(to_enable).each(function(id) { self.exts.find(id).enable() });
-    _(to_disable).each(function(id) { self.exts.find(id).disable() });
+    _(to_enable).each(function(id) { self.exts.find(id).enable(); if (CommentOutput) console.log("Extensity: Auto ENabling: " + self.exts.find(id).name()); });
+    _(to_disable).each(function(id) { self.exts.find(id).disable(); if (CommentOutput) console.log("Extensity: Auto DISabling: " + self.exts.find(id).name()); });
     self.currentProfile(p.name());
     //close();
     localStorage["currentProfile"] = self.currentProfile();
@@ -412,13 +412,7 @@ var ExtensityViewModel = function() {
       if (profs[i].hasItems() && self.currentURL().indexOf(profs[i].name()) > -1) {
         console.log("Extensity: Profile: \"" + profs[i].name() + "\", matched URL " + self.currentURL());
         console.log("Extensity: Domain Loop is Enabling/Disabling extensions...");
-        var ids = profs[i].items();
-        var to_enable = _.intersection(self.exts.disabled.pluck(),ids);
-        var to_disable = _.difference(self.exts.enabled.pluck(), ids);
-        _(to_enable).each(function(id) { self.exts.find(id).enable(); console.log("Extensity: Auto ENabling: " + self.exts.find(id).name()); });
-        _(to_disable).each(function(id) { self.exts.find(id).disable(); console.log("Extensity: Auto DISabling: " + self.exts.find(id).name()); });
-        self.currentProfile(profs[i].name());
-        localStorage["currentProfile"] = self.currentProfile();
+        self.setProfile(profs[i],true);
         result=true;
         break;
       }
