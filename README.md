@@ -22,9 +22,11 @@ Website: [http://sergiokas.github.com/Extensity/](http://sergiokas.github.com/Ex
 Follow us in Twitter: [@ExtensityChrome](https://twitter.com/ExtensityChrome)
 
 ### What's new:
+v1.4.401 (June 6 2017 fork by genBTC)
+- **New Feature**: Auto Switch profiles based on domain. (by creating profiles with names that match the website/domain you want to load custom profiles to enable/disable extensions for)
 
 v1.3.0 (Feb 2017)
-- **New Feature**: Search box for extensions and apps.
+- Search box for extensions and apps.
 - Temporary workaround for [Chromium bug](https://bugs.chromium.org/p/chromium/issues/detail?id=307912)
 
 v1.2.4 (Sept 2016)
