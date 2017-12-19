@@ -20,21 +20,21 @@ jQuery(document).ready(function ($) {
   
   //Take control of the mouse right click action, so we can use it to launch profiles.html when profile right clicked
   var mouseDownElements = [];
-  $(document).on('mousedown', '*', function (event) {
+  $('.profileList').on('mousedown', '*', function (event) {
     if (event.which == 3) {
       mouseDownElements.push(this);
     }
   });
-  $(document).on('mouseup', '*', function (event) {
+  $('.profileList').on('mouseup', '*', function (event) {
     if (event.which == 3 && mouseDownElements.indexOf(this) >= 0) {
       $(this).trigger('rightclick');
     }
   });
-  $(document).on('mouseup', function () {
+  $('.profileList').on('mouseup', function () {
     mouseDownElements.length = 0;
   });
   // disable contextmenu
-  $(document).on('contextmenu', function (event) {
+  $('.profileList').on('contextmenu', function (event) {
     event.preventDefault();
   });
   //Bind to all .profileList that it can open profiles.html

@@ -46,12 +46,7 @@ jQuery(document).ready( function($) {
     
     self.rename = function() {
       var n = self.rename_name();
-      if (n)
-        var p = self.profiles.find(n);
-      else
-        return;
-      if (p)
-        self.current_profile(p);
+      if (!n) return;
       self.current_profile().name(n);
       self.rename_name("");
     };
@@ -69,7 +64,10 @@ jQuery(document).ready( function($) {
       $('#save-result').text('| Saved!').show().delay(2000).fadeOut('slow');
     };
 
-    self.close = function() { window.close(); }
+    self.close = function() { 
+      if(confirm("Are you sure you want to close? Hit cancel to go back and Save."))
+        window.close();
+    }
 
     self.toggleAll = function() {
       var exts = _(self.ext.extensions()).map(function(i) { return i.id(); });

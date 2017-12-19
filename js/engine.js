@@ -327,59 +327,52 @@ var ExtensityViewModel = function() {
     self.switch = new SwitchViewModel(self.exts);
     self.search = new SearchViewModel();
     self.currentURL = ko.observable("");
-    self.currentProfile = ko.observable(localStorage["currentProfile"]);    
+    self.currentProfile = ko.observable(localStorage["currentProfile"]);
+    self.listedExtensions = ko.computed(function() {
+      // Sorted/Filtered list of extensions
+      return (self.opts.enabledFirst()) ?
+        _(self.exts.extensions()).chain().sortBy(nameSortFn).sortBy(statusSortFn).filter(filterFn).value() :
+        _(self.exts.extensions()).filter(filterFn);
+    }).extend({countable: null});
+
+    self.listedApps = ko.computed(function() {
+      // Sorted/Filtered list of apps
+      return _(self.exts.apps()).filter(filterFn);
+    }).extend({countable: null});
+
+    self.listedItems = ko.computed(function() {
+      // Sorted/Filtered list of all items
+      return _(self.exts.items()).filter(filterFn);
+    }).extend({countable: null});
+
+    self.emptyItems = ko.pureComputed(function() {
+      return self.listedApps.none() && self.listedExtensions.none();
+    });    
   };
+  //end of things that need to be refreshed everytime
   self.refreshEngine();
+
+  //Public Helper Functions:
+  self.openChromeExtensions = function() {
+    openTab("chrome://extensions");
+  };
+  self.launchApp = function(app) {
+    chrome.management.launchApp(app.id());
+  };
   
+  //Private Helper Functions:
   var filterFn = function(i) {
     // Filtering function
     if(!self.opts.searchBox()) return true;
     if(!self.search.q()) return true;
     return i.name().toUpperCase().indexOf(self.search.q().toUpperCase()) !== -1;
   };
-
   var nameSortFn = function(i) {
     return i.name().toUpperCase();
   };
-
   var statusSortFn = function(i) {
     return !i.status();
   };
-
-  self.openChromeExtensions = function() {
-    openTab("chrome://extensions");
-  };
-
-  self.launchApp = function(app) {
-    chrome.management.launchApp(app.id());
-  };
-
-  self.listedExtensions = ko.computed(function() {
-    // Sorted/Filtered list of extensions
-    return (self.opts.enabledFirst()) ?
-      _(self.exts.extensions()).chain().sortBy(nameSortFn).sortBy(statusSortFn).filter(filterFn).value() :
-      _(self.exts.extensions()).filter(filterFn);
-  }).extend({countable: null});
-
-  self.listedApps = ko.computed(function() {
-    // Sorted/Filtered list of apps
-    return _(self.exts.apps()).filter(filterFn);
-  }).extend({countable: null});
-
-  self.listedItems = ko.computed(function() {
-    // Sorted/Filtered list of all items
-    return _(self.exts.items()).filter(filterFn);
-  }).extend({countable: null});
-
-  self.emptyItems = ko.pureComputed(function() {
-    return self.listedApps.none() && self.listedExtensions.none();
-  });
-  // View helpers
-  var visitedProfiles = ko.computed(function() {
-    return (self.dismissals.dismissed("profile_page_viewed") || self.profiles.any());
-  });
-
-  // Private helper functions
   var openTab = function (url) {
     chrome.tabs.create({url: url});
     close();
@@ -388,6 +381,12 @@ var ExtensityViewModel = function() {
     window.close();
   };
 
+  // View helpers
+  var visitedProfiles = ko.computed(function() {
+    return (self.dismissals.dismissed("profile_page_viewed") || self.profiles.any());
+  });
+
+  //Runs when profile is clicked or auto-switched to.
   self.setProfile = function(p,CommentOutput) {    
     var ids = p.items();
     var to_enable = _.intersection(self.exts.disabled.pluck(),ids);
@@ -398,10 +397,11 @@ var ExtensityViewModel = function() {
     //close();
     localStorage["currentProfile"] = self.currentProfile();
   };
-
+  
+  //Domain Loop (current URL) = Profile Auto Switcher
   self.domainLoop = function (URL) {
     var result = false;
-    if (URL) self.currentURL(url);
+    if (URL) self.currentURL(URL);
     if (!self.currentURL()) return result;
     if (self.currentURL().indexOf(self.currentProfile()) > -1)
       //console.log("Same URL matched to existing profile, do nothing.");
