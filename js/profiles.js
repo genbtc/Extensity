@@ -64,6 +64,7 @@ jQuery(document).ready(function($) {
         };
 
         self.close = function() {
+            //TODO: Only make this come up if necessary, (Currently always says it even if you didnt edit)
             if (confirm("Are you sure you want to close? Hit cancel to go back and Save."))
                 window.close();
         }
