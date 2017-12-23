@@ -25,6 +25,9 @@ Follow us in Twitter: [@ExtensityChrome](https://twitter.com/ExtensityChrome)
 v1.4.401 (June 6 2017 fork by genBTC)
 - **New Feature**: Auto Switch profiles based on domain. (by creating profiles with names that match the website/domain you want to load custom profiles to enable/disable extensions for)
 
+v1.3.1 (Nov 2017)
+- Changed profiles icon, minor visual changes.
+
 v1.3.0 (Feb 2017)
 - Search box for extensions and apps.
 - Temporary workaround for [Chromium bug](https://bugs.chromium.org/p/chromium/issues/detail?id=307912)
